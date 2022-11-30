@@ -85,19 +85,20 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
   useEffect(() => {
     checkIfWalletConnected();
-  }, []);
+  }, [currentAccount]);
 
   //---CONNET WALLET FUNCTION
   const connectWallet = async () => {
     try {
-      if (!window.ethereum)
+      if (!window.ethereum){
         return setOpenError(true), setError("Install MetaMask");
-
+      }
       const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+        method: "wallet_requestPermissions",
+        params: [{ eth_accounts: {} }],
       });
       setCurrentAccount(accounts[0]);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       setError("Error while connecting to wallet");
       setOpenError(true);
@@ -131,7 +132,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
       await createSale(url, price);
       router.push("/searchPage");
     } catch (error) {
-      setError("Error while creating NFT");
+      setError("Error while creating NFT:",error);
       setOpenError(true);
     }
   };

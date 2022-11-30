@@ -10,4 +10,10 @@ module.exports = {
   //     accounts: [`0x${"Your private key here"}`],
   //   },
   // },
+  networks: {
+    hardhat: {
+      url: process.env.RPC_URL,
+      chainId: 1337,
+    }
+ }
 };

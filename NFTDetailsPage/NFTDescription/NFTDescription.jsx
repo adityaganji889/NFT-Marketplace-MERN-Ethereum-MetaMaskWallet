@@ -254,10 +254,8 @@ const NFTDescription = ({ nft }) => {
                   {nft.price} ETH <span>( ≈ $3,221.22)</span>
                 </p>
               </div>
-
-              <span>[96 in stock]</span>
             </div>
-
+            <div style={{textAlign: 'right'}}>[96 in stock]</div>
             <div className={Style.NFTDescription_box_profile_biding_box_button}>
               {currentAccount == nft.seller.toLowerCase() ? (
                 <p>You can't buy your own NFT</p>
