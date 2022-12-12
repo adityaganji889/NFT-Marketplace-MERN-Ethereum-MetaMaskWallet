@@ -166,41 +166,43 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
   const fetchNFTs = async () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider();
-      const contract = fetchContract(provider);
-
-      const data = await contract.fetchMarketItems();
-      console.log(data);
-
-      const items = await Promise.all(
-        data.map(
-          async ({ tokenId, seller, owner, price: unformattedPrice }) => {
-            const tokenURI = await contract.tokenURI(tokenId);
-
-            const {
-              data: { image, name, description },
-            } = await axios.get(tokenURI);
-            const price = ethers.utils.formatUnits(
-              unformattedPrice.toString(),
-              "ether"
-            );
-
-            return {
-              price,
-              tokenId: tokenId.toNumber(),
-              seller,
-              owner,
-              image,
-              name,
-              description,
-              tokenURI,
-            };
-          }
-        )
-      );
-
-      // console.log(items);
-      return items;
+      if(currentAccount){
+        const provider = new ethers.providers.JsonRpcProvider();
+        const contract = fetchContract(provider);
+  
+        const data = await contract.fetchMarketItems();
+        console.log(data);
+  
+        const items = await Promise.all(
+          data.map(
+            async ({ tokenId, seller, owner, price: unformattedPrice }) => {
+              const tokenURI = await contract.tokenURI(tokenId);
+  
+              const {
+                data: { image, name, description },
+              } = await axios.get(tokenURI);
+              const price = ethers.utils.formatUnits(
+                unformattedPrice.toString(),
+                "ether"
+              );
+  
+              return {
+                price,
+                tokenId: tokenId.toNumber(),
+                seller,
+                owner,
+                image,
+                name,
+                description,
+                tokenURI,
+              };
+            }
+          )
+        );
+  
+        // console.log(items);
+        return items;
+      }
     } catch (error) {
       setError("Error while fetching NFTS");
       setOpenError(true);
@@ -208,7 +210,9 @@ export const NFTMarketplaceProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchNFTs();
+    if(currentAccount){
+      fetchNFTs();
+    }
   }, []);
 
   //--FETCHING MY NFT OR LISTED NFTs

@@ -19,10 +19,10 @@ const searchPage = () => {
 
   useEffect(() => {
     try {
-      fetchNFTs().then((items) => {
-        setNfts(items.reverse());
-        setNftsCopy(items);
-      });
+        fetchNFTs().then((items) => {
+          setNfts(items.reverse());
+          setNftsCopy(items);
+        });
     } catch (error) {
       setError("Please reload the browser", error);
     }
